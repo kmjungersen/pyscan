@@ -1,0 +1,22 @@
+# -*- coding: utf-8 -*-
+# vi: set ft=python :
+
+import konch
+from main import Barcode
+from local import *
+
+# Available options:
+#   'context', 'banner', 'shell', 'prompt',
+#   'hide_context', 'ipy_extensions', 'ipy_autoreload'
+konch.config({
+    'context': {
+        'barcode': Barcode,
+        'p': pretzel,
+    },
+})
+
+def setup():
+    pass
+
+def teardown():
+    pass
