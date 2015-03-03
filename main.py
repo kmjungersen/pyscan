@@ -12,6 +12,8 @@ import csv
 import json
 import urllib
 
+from bs4 import BeautifulSoup as bs
+
 from local import *
 
 
@@ -50,7 +52,13 @@ class Barcode():
             number=self.number,
         )
 
-        self.data = json.load(urllib.urlopen(url))
+        document = urllib.request.urlopen(url)
+
+        print(document)
+
+        self.data = json.load(document)
+
+        self.__convert_unicode_characters()
 
         return self.data
 
@@ -102,6 +110,17 @@ class Barcode():
 
             code_writer.writerow(row)
 
+    def __convert_unicode_characters(self):
+        """
+
+        :return:
+        """
+
+        for key, value in self.data.iteritems():
+
+            converted_string = BeautifulSoup(value)
+            self.data[key] = converted_string
+
     def __eq__(self, other):
         """
 
@@ -118,3 +137,6 @@ class Barcode():
         """
 
         return str(self.data)
+
+if __name__ == '__main__':
+    b = Barcode(pretzel)
