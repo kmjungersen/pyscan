@@ -13,6 +13,7 @@ konch.config({
         'barcode': Barcode,
         'p': pretzel,
     },
+    'ipy_autoreload': True
 })
 
 def setup():
