@@ -9,10 +9,9 @@ This file houses the core of the application
 
 # imports
 import csv
-import json
-import urllib
+import requests
 
-from bs4 import BeautifulSoup as bs
+from bs4 import BeautifulSoup
 
 from local import *
 
@@ -52,15 +51,15 @@ class Barcode():
             number=self.number,
         )
 
-        document = urllib.request.urlopen(url)
+        r = requests.get(url)
 
-        print(document)
+        document = r.json()
 
-        self.data = json.load(document)
+        self.data = document
 
         self.__convert_unicode_characters()
 
-        return self.data
+        return document
 
     def save(self, file_path=None):
         """
@@ -116,10 +115,12 @@ class Barcode():
         :return:
         """
 
-        for key, value in self.data.iteritems():
+        for key, value in self.data.items():
 
-            converted_string = BeautifulSoup(value)
-            self.data[key] = converted_string
+            if type(value) is not int:
+
+                converted_string = BeautifulSoup(value)
+                self.data[key] = converted_string
 
     def __eq__(self, other):
         """
