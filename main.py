@@ -18,7 +18,7 @@ from local import *
 
 class Barcode():
 
-    def __init__(self, barcode_number, autosave=False):
+    def __init__(self, barcode_number=None, autosave=False):
         """
 
         :return:
@@ -28,10 +28,17 @@ class Barcode():
         self.autosave = False
 
         self.base_url = 'http://api.upcdatabase.org/json/{API_KEY}/{number}'
-        self.data = self.retrieve()
+        
+        self.data = {}
+        self.item_name = ''
+        self.description = ''
 
-        self.item_name = self.data.get('itemname').decode('ascii')
-        self.description = self.data.get('description').decode('ascii')
+        if barcode_number:
+
+            self.data = self.retrieve()
+
+            self.item_name = self.data.get('itemname').decode('ascii')
+            self.description = self.data.get('description').decode('ascii')
 
         self.save_file = SAVE_FILE_PATH
 
@@ -40,7 +47,7 @@ class Barcode():
 
         :param barcode:
         :return:
-        """
+        """~
 
         if barcode:
 
