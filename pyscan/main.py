@@ -9,36 +9,44 @@ This file houses the core of the application
 
 # imports
 import csv
-import requests
+import pprint
 
+import requests
 from bs4 import BeautifulSoup
 
-from local import *
+from pyscan.local import *
 
 
 class Barcode():
 
-    def __init__(self, barcode_number=None, autosave=False):
+    def __init__(self, barcode_id=None, barcode_ids=None, autosave=False):
         """
 
-        :return:
-        """
-
-        self.number = barcode_number
-        self.autosave = False
-
-        self.base_url = 'http://api.upcdatabase.org/json/{API_KEY}/{number}'
+        :return:051000192769
         
+        """
+
+        self.number = barcode_id
+        self.autosave = autosave
+
+        self.base_url = BASE_URL
+
         self.data = {}
         self.item_name = ''
         self.description = ''
 
-        if barcode_number:
+        self.pp = pprint.PrettyPrinter()
+
+        if barcode_id:
 
             self.data = self.retrieve()
 
             self.item_name = self.data.get('itemname').decode('ascii')
             self.description = self.data.get('description').decode('ascii')
+
+        elif barcode_ids:
+
+            pass
 
         self.save_file = SAVE_FILE_PATH
 
@@ -47,7 +55,7 @@ class Barcode():
 
         :param barcode:
         :return:
-        """~
+        """
 
         if barcode:
 
@@ -64,7 +72,7 @@ class Barcode():
 
         self.data = document
 
-        self.__convert_unicode_characters()
+        # self.__convert_unicode_characters()
 
         return document
 
@@ -95,9 +103,25 @@ class Barcode():
             if code == 'done':
                 break
 
-            self.retrieve(code)
+            self.pp.pprint(self.retrieve(code))
 
             self.save()
+
+    def batch_retrieve(self, barcode_ids):
+        """
+
+        :return:
+        """
+
+        barcode_metadata_list = []
+
+        for barcode in barcode_ids:
+
+            metadata = self.retrieve(barcode)
+
+            barcode_metadata_list.append(metadata)
+
+
 
     def csv_write(self):
         """
