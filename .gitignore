@@ -1,4 +1,4 @@
-local.py
+pyscan_core/local.py
 *.pyc
 .idea/
 *.csv
