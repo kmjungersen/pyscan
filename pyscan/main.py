@@ -120,7 +120,7 @@ class Barcode():
 
             barcode_metadata_list.append(metadata)
 
-
+        return barcode_metadata_list
 
     def csv_write(self):
         """
