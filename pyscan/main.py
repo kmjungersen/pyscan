@@ -22,8 +22,7 @@ class Barcode():
     def __init__(self, barcode_id=None, barcode_ids=None, autosave=False):
         """
 
-        :return:051000192769
-        
+        :return:
         """
 
         self.number = barcode_id
